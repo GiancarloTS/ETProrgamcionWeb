@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
-from .forms import ProductoForm, RegistroUsuario 
+from .forms import ProductoForm, RegistroUsuario, cambiarClaveForm
 from django.contrib.auth.decorators import login_required
 from .models import *
 from . import cart
@@ -10,7 +11,7 @@ import datetime
 from django.db.models import Q
 from rest_framework import routers
 from .api import ProductoViewSet
-
+from django.views.generic import View
 # Create your views here.
 
 
@@ -242,7 +243,32 @@ def editar_perfil(request):
     usuario.save()
     return redirect('perfil')
 
+class cambiar_clave(RegistroUsuario, View):
+    template_name = 'Cambiarclave.html'
+    form_class = cambiarClaveForm
+    success_url = reverse_lazy('inicio')
 
+    def get(self, request, *arg, **kwargs):
+        return render(request, self.template_name, {'form': self.form_class})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            user = User.objects.filter(id=request.user.id)
+            if user.exists():
+                user = user.first()
+                user.set_password(form.cleaned_data.get('clave1'))
+                if request.POST['clave1'] != request.POST['clave2']:
+                    return redirect('cambiarclave')
+                else:
+                    user.save()
+                    logout(request)
+                    return redirect('iniciosesion') 
+        else:
+            form = self.form_class(request.POST)
+            return render(request, self.template_name, {'form':form})
+
+            
 
 
 

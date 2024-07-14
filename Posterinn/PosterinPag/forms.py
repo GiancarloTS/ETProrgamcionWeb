@@ -89,3 +89,31 @@ class ProductoForm(forms.ModelForm):
                 }
             )
         }
+
+
+class cambiarClaveForm(forms.Form):
+    clave1= forms.CharField(label = 'Contraseña', widget= forms.PasswordInput(
+            attrs= {
+                'class' : 'form-control',
+                'placeholder': 'Ingrese su nueva contraseña',
+                'id': 'password1',
+                'required':'required',
+            }
+    ))
+
+    clave2= forms.CharField(label = 'Confirme su contraseña', widget= forms.PasswordInput(
+        attrs= {
+            'class' : 'form-control',
+            'placeholder': 'Ingrese nuevamente la nueva contraseña',
+            'id': 'password2',
+            'required':'required',
+        }
+    ))
+
+    def validacion_nueva_clave(self):
+        clave1 = self.cleaned_data.get('clave1')
+        clave2 = self.cleaned_data.get('clave2')
+
+        if clave1 != clave2:
+            raise forms.ValidationError('Contraseñas no coinciden!!!!')
+        return clave2
