@@ -40,5 +40,6 @@ urlpatterns = [
     path('eliminar/<id>',views.eliminar,name="eliminar"),
     path('generarboleta/',views.generarboleta,name="generarboleta"),
 
-    path('api/', include(router.urls))
+    path('api/', include(router.urls)),
+    path('cambiarclave', cambiar_clave.as_view(), name='cambiarclave')
 ]

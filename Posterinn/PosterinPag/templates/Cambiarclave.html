@@ -63,9 +63,6 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'cerrarsesion' %}">Cerrar sesión</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'cambiarclave' %}">Olvidé Contraseña</a>
-            </li>
             {% else %}
             <li class="nav-item">
               <a class="nav-link active" href="{% url 'registro' %}">Registro</a>
@@ -93,14 +90,18 @@
               <div class="card-body">
 
                 <form method="POST" class="card card-body text-center">
-                  <h1>Registro</h1>
-                  {{error}}
-                  {% csrf_token %}
-                  {{form | crispy}}
-              
-                  <button class="btn btn-success">
-                    Resgitrarse
-                  </button>
+                    <h1>Cambiar Contraseña</h1>
+                    {% csrf_token %}
+                    {{form | crispy}}
+
+                    <div class="d-flex gap-5">
+                      <div class="mb-1 mr-2" style="width: 120px;">
+                          <a class="btn btn-danger w-100" href="{% url 'inicio' %}">Cancelar</a>
+                      </div>
+                      <div class="mb-1">
+                          <button class="btn btn-success" style="width: 120px;" type="submit">Cambiar</button>
+                      </div>
+                  </div>
                 </form>
 
               </div>
@@ -109,7 +110,6 @@
       </div>
     </div>
   </main>
-
   
 
 
