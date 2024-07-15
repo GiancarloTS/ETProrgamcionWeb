@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'rest_framework',
     'PosterinPag',
+    
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

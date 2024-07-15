@@ -56,8 +56,11 @@ class detalle_boleta(models.Model):
     id = models.ForeignKey(boleta, blank=True, on_delete=models.CASCADE)
     id_detalle_boleta = models.AutoField(primary_key=True)
     id_producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    nombre_producto = models.CharField(max_length=200,default = "Prueba")
+    descripcion_producto = models.TextField(null=True, blank=True,)
     cantidad = models.IntegerField()
-    subtotal = models.BigIntegerField()
+    cliente = models.CharField(max_length=200,default = "Prueba")
+    subtotal = models.BigIntegerField(null=True, blank=True)
 
     def __str__(self):
         return str(self.id_detalle_boleta)

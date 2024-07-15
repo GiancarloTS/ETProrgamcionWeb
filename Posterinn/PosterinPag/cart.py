@@ -1,3 +1,5 @@
+from django.contrib import messages
+
 class carrito:
     def __init__(self,request ):
         self.request = request
@@ -18,16 +20,19 @@ class carrito:
                 "categoria": str(producto.categoria),
                 "cantidad" : 1,
                 "total" : producto.precio,
-                "stock" : producto.existencias
-
+                "stock" : producto.existencias,
+                "descripcion" : producto.descripcion
             }
         else:   # si existe agrega + 1 a la cantidad noma
-            for key, value in self.carrito.items():
-                if key==producto.codigo and value["cantidad"] < producto.existencias:
+            for key, value in self.carrito.items(): 
+                if key==producto.codigo and value["cantidad"] < producto.existencias: # si la cantidad es menor al stock 
                     value["cantidad"] = value["cantidad"]+1
                     value["precio"] = producto.precio
                     value["total"]= int(value["total"]) + int(producto.precio)
+                    
                     break
+                else: # si es mayor a el stock
+                    messages.success(self.request,"no mas existencias")
         self.guardar()    
         
     def guardar(self):
@@ -42,8 +47,7 @@ class carrito:
                 if value["cantidad"] < 1:
                     self.eliminar(producto)
                 break 
-            else:
-                print("el producto no existe en el carrito")
+            
         self.guardar()
 
     

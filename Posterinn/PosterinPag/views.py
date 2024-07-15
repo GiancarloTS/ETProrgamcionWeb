@@ -10,17 +10,24 @@ import datetime
 from django.db.models import Q
 from rest_framework import routers
 from .api import ProductoViewSet
-
+from django.core.paginator import Paginator
 # Create your views here.
 
 
 # carrito de compra funciones
 def productos(request):
+    queryset = request.GET.get("buscar")
     productos=Producto.objects.all() # select * from productos 
-    context = {
-            'productos' : productos
-        }
-    return render(request, 'producto/index.html',context)
+    paginator = Paginator(productos, 12)  # Muestra 10 productos por página  
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    if queryset:
+            page_obj = Producto.objects.filter(
+                Q(nombre__icontains = queryset) |
+                Q(descripcion__icontains = queryset)
+            ).distinct()
+    return render(request, 'producto/index.html',{'productos':productos,'page_obj':page_obj})
 
 
 
@@ -81,15 +88,22 @@ def mostrar(request):
     return render(request, 'mostrar.html', datos)
 
 
+    
+
 def listado_productos(request):
+
         queryset = request.GET.get("buscar")
         productos=Producto.objects.all() # select * from productos 
+        paginator = Paginator(productos, 2)  # Muestra 10 productos por página  
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         if queryset:
-            productos = Producto.objects.filter(
+            page_obj = Producto.objects.filter(
                 Q(nombre__icontains = queryset) |
                 Q(descripcion__icontains = queryset)
             ).distinct()
-        return render(request, 'GaleriaDeFotos.html', {'productos':productos})
+        return render(request, 'GaleriaDeFotos.html', {'productos':productos,'page_obj':page_obj})
 
 def agregar(request,id):
     carrito_compra= cart.carrito(request)
@@ -117,9 +131,11 @@ def generarboleta(request):
     productos = []
     for key, value in request.session['carrito'].items():
             producto = Producto.objects.get(codigo = value['codigo'])
+           
+            client = request.user.username
             cant = value['cantidad']
             subtotal = cant * int(value['precio'])
-            detalle = detalle_boleta(id = boletaV, id_producto = producto, cantidad = cant, subtotal = subtotal)
+            detalle = detalle_boleta(id = boletaV,cliente = client, id_producto = producto,nombre_producto = producto.nombre,descripcion_producto = producto.descripcion, cantidad = cant, subtotal = subtotal)
             detalle.save()
             productos.append(detalle)
             restarstock(key,cant)
@@ -146,7 +162,22 @@ def ver_api():
     return router.register('productos', ProductoViewSet, 'productos')
     # ----------------------------------------------------
 
-
+def historial_compras(request):
+        queryset = request.GET.get("buscar")
+        DETALETA=detalle_boleta.objects.all() # select * from DETALLE BOLETA 
+        paginator = Paginator(DETALETA, 12)  # Muestra 10 productos por página  
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        if queryset:
+            page_obj = detalle_boleta.objects.filter(
+                Q(nombre_producto__icontains = queryset) |
+                Q(descripcion_producto__icontains = queryset)|
+                Q(cliente__icontains = queryset) |
+                Q(id_detalle_boleta__icontains = queryset) 
+            ).distinct()
+        
+        return render(request, 'producto/adminhistorialcompras.html', {'DETALETA':DETALETA,'page_obj':page_obj})
+   
 
 @login_required
 def pokemon(request):

@@ -21,11 +21,14 @@ urlpatterns = [
     path('mostrar/',mostrar, name="mostrar"),
     
     path('adminproducto', views.productos, name='productos'),
+    path('adminchistorialcompras',views.historial_compras, name='adminchistorialcompras'),
     path('inicio', views.inicio, name='inicio'),
     path('quienes', views.quienes, name='quienes'),
     path('registro', views.registro, name='registro'),
     path('novedades', views.novedades, name='novedades'),
     path('tienda',views.listado_productos, name='tienda'),
+    path('<int:tienda>',views.listado_productos, name='tienda'),
+    
     path('iniciosesion', views.inicio_sesion, name='iniciosesion'),
 
     path('perfil', perfil, name='perfil'),
