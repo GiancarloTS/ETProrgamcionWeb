@@ -112,8 +112,7 @@
       
         
         <div class="container  D-flex  flex-wrap ">
-          
-                {% for x in productos  %}
+              {% for x in page_obj %}
                 
                  
                       
@@ -155,7 +154,25 @@
                       
                 {% endfor %}
               </div>
-           
+              <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; primero</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+                    {% endif %}
+        
+                    <span class="current">
+                        Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+                    </span>
+        
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">siguiente</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">último &raquo;</a>
+                    {% endif %}
+                </span>
+              </div>
+
+               
               {% if user.is_authenticated %}
 
               <div class="alert alert-light" role="alert" style="margin-top: 20px;">
@@ -168,8 +185,8 @@
                       <th scope="col">Precio</th>
                       <th scope="col">Cantidad</th>
                       <th scope="col">Stock</th>
-                      <th scope="col">total</th>
-                      <th scope="col">elimnar</th>
+                      <th scope="col">Total</th>
+                      <th scope="col">Elimnar</th>
                     </tr>
                   </thead>
                   {% if request.session.carrito.items %}
@@ -194,8 +211,19 @@
                             color: white;
                             text-decoration: none;
                             font-weight: bold;
+                            
+                            
+                            
                             line-height: 25px;">ELIMINAR<a></td>
-                      
+                            {% if messages %}
+                            <div class="alert alert-danger" role="alert">
+                              <ul class="messages">
+                                  {% for message in messages %}
+                                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                  {% endfor %}
+                              </ul>
+                            </div>
+                            {% endif %}
                       </td>
                       </tr>
                     
@@ -225,8 +253,9 @@
                     <h4>Ingrese productos</h4>
                     {% endif %}
               </div>
-              {% endif %}
-
+              {% endif %} 
+            
+            
 
 
 

@@ -4,7 +4,9 @@
     <center>
       <br>
     </br>
-    <h1>Listado de productos</h1>
+    <div><div class="container ">
+        <h1>Listado de Productos</h1><a href="{% url 'adminchistorialcompras' %}"><input class="btn btn-primary" type="button" value="Boletas" ></a>
+      </div>
     </center>
     
 
@@ -12,6 +14,44 @@
     </br>
     <br>
     </br>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 search">
+          <form method="get">
+            <div id="custom-search-input">
+              <div class="input-group col-md-12">
+                <input type="text" class="form-control" placeholder="Buscar..." name="buscar">
+                <span class="input-group-list">
+                  <i class="icon icon-search"></i>
+                  <button type="submit" class="btn btn-success">Buscar</button>
+                </span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; primero</a>
+                <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+            {% endif %}
+  
+            <span class="current">
+
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+              
+            </span>
+              
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">siguiente</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">último &raquo;</a>
+            {% endif %}
+        </span> 
+    </div>
+   
+    </div>
+    
     <div class="container">
         <div class="row">
             <table class="table">
@@ -26,7 +66,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                    {% for producto in productos %}
+                    {% for producto in page_obj %}
                     <tr>
                         <th scope="row">{{producto.codigo}}</th>
                         <td>{{producto.nombre}}</td>
