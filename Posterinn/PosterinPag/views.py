@@ -97,7 +97,7 @@ def listado_productos(request):
 
         queryset = request.GET.get("buscar")
         productos=Producto.objects.all() # select * from productos 
-        paginator = Paginator(productos, 2)  # Muestra 10 productos por página  
+        paginator = Paginator(productos, 12)  # Muestra 10 productos por página  
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
