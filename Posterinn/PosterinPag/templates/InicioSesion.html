@@ -65,6 +65,9 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'cerrarsesion' %}">Cerrar sesión</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'cambiarclave' %}">Olvidé Contraseña</a>
+            </li>
             {% else %}
             <li class="nav-item">
               <a class="nav-link " href="{% url 'registro' %}">Registro</a>
@@ -97,14 +100,17 @@
               {% csrf_token %}
               {{ form | crispy }}
               <div class="d-flex gap-3">
-                <div class="mb-3 mr-2" style="width: 120px;">
+                <div class="mb-3 mr-2" style="width: 140px;">
                   <button type="submit" class="btn btn-success" style="float:right">
                     Iniciar sesion
                   </button>
                 </div>
                 <div class="mb-3">
-                  <a href="{% url 'registro' %}">Regístrate aquí</a>
+                  <a class="btn btn-primary" href="{% url 'registro' %}">Regístrate aquí</a>
                 </div>
+              </div>
+              <div class="row align-items-center">
+                <a class="col btn btn-secondary" href="{% url 'cambiarclave' %}">Olvidé mi contraseña</a>
               </div>
             </form>
           </div>

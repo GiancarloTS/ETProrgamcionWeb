@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
@@ -256,14 +257,14 @@ class cambiar_clave(RegistroUsuario, View):
         if form.is_valid():
             user = User.objects.filter(id=request.user.id)
             if user.exists():
-                user = user.first()
-                user.set_password(form.cleaned_data.get('clave1'))
-                if request.POST['clave1'] != request.POST['clave2']:
-                    return redirect('cambiarclave')
-                else:
+                if request.POST['clave1'] == request.POST['clave2']:
+                    user = user.first()
+                    user.set_password(form.cleaned_data.get('clave1'))
                     user.save()
                     logout(request)
                     return redirect('iniciosesion') 
+                else:
+                    return redirect('cambiarclave')
         else:
             form = self.form_class(request.POST)
             return render(request, self.template_name, {'form':form})

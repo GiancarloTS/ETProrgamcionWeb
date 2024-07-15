@@ -91,18 +91,17 @@
 
                 <form method="POST" class="card card-body text-center">
                     <h1>Cambiar Contraseña</h1>
-                    {{error}}
                     {% csrf_token %}
                     {{form | crispy}}
 
                     <div class="d-flex gap-5">
-                        <div class="mb-1 mr-2" style="width: 120px;">
-                            <a class="btn btn-danger w-100" href="{% url 'inicio' %}">Cancelar</a>
-                        </div>
-                        <div class="mb-1">
-                            <button class="btn btn-success" style="width: 120px;" type="submit">Cambiar</button>
-                        </div>
-                    </div>
+                      <div class="mb-1 mr-2" style="width: 120px;">
+                          <a class="btn btn-danger w-100" href="{% url 'inicio' %}">Cancelar</a>
+                      </div>
+                      <div class="mb-1">
+                          <button class="btn btn-success" style="width: 120px;" type="submit">Cambiar</button>
+                      </div>
+                  </div>
                 </form>
 
               </div>
@@ -111,8 +110,6 @@
       </div>
     </div>
   </main>
-
-  
   
 
 

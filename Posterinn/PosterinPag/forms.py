@@ -96,7 +96,7 @@ class cambiarClaveForm(forms.Form):
             attrs= {
                 'class' : 'form-control',
                 'placeholder': 'Ingrese su nueva contraseña',
-                'id': 'password1',
+                'id': 'clave1',
                 'required':'required',
             }
     ))
@@ -105,7 +105,7 @@ class cambiarClaveForm(forms.Form):
         attrs= {
             'class' : 'form-control',
             'placeholder': 'Ingrese nuevamente la nueva contraseña',
-            'id': 'password2',
+            'id': 'clave2',
             'required':'required',
         }
     ))
